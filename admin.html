@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Bawol Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1E90FF;
+            --secondary-color: #FF8C00;
+            --tertiary-color: #2E8B57;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+            --gray-color: #6c757d;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* Header Admin */
+        .admin-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+            .admin-logo h1 {
+                font-size: 1.8rem;
+                font-weight: 600;
+            }
+
+            .admin-logo span {
+                color: var(--primary-color);
+            }
+
+        .admin-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-admin {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .btn-admin:hover {
+                background: #0d7be6;
+                transform: translateY(-2px);
+            }
+
+        .btn-danger {
+            background: var(--danger-color);
+        }
+
+            .btn-danger:hover {
+                background: #c82333;
+            }
+
+        .btn-success {
+            background: var(--tertiary-color);
+        }
+
+            .btn-success:hover {
+                background: #247348;
+            }
+
+        /* Container principal */
+        .admin-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 280px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 2rem 0;
+        }
+
+        .admin-user {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .user-details p {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .admin-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+            .menu-item:hover {
+                background: #f8f9fa;
+                border-left-color: var(--primary-color);
+            }
+
+            .menu-item.active {
+                background: #e3f2fd;
+                border-left-color: var(--primary-color);
+                color: var(--primary-color);
+            }
+
+            .menu-item i {
+                width: 20px;
+                text-align: center;
+            }
+
+        /* Contenu principal */
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cartes de statistiques */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+            .stat-card h3 {
+                color: var(--gray-color);
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+                text-transform: uppercase;
+                font-weight: 600;
+            }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            color: var(--tertiary-color);
+        }
+
+            .stat-change.negative {
+                color: var(--danger-color);
+            }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .table-header h2 {
+                font-size: 1.3rem;
+                font-weight: 600;
+            }
+
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: var(--tertiary-color);
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: var(--danger-color);
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .btn-edit {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-view {
+            background: var(--tertiary-color);
+            color: white;
+        }
+
+        .btn-icon:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        /* Formulaires */
+        .form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .form-modal.active {
+                display: flex;
+            }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 600;
+                color: var(--dark-color);
+            }
+
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #e9ecef;
+                border-radius: var(--border-radius);
+                font-size: 16px;
+                transition: var(--transition);
+            }
+
+                .form-group input:focus,
+                .form-group textarea:focus,
+                .form-group select:focus {
+                    outline: none;
+                    border-color: var(--primary-color);
+                    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+                }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        /* Styles pour le sélecteur d'image */
+        .image-selector {
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            background: #fafafa;
+            transition: var(--transition);
+        }
+
+            .image-selector:hover {
+                border-color: var(--primary-color);
+                background: #f0f8ff;
+            }
+
+        .image-preview {
+            margin-bottom: 1rem;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+
+            .image-preview img {
+                max-width: 100%;
+                max-height: 200px;
+                border-radius: var(--border-radius);
+                box-shadow: var(--box-shadow);
+            }
+
+        .no-image {
+            color: var(--gray-color);
+            font-style: italic;
+            padding: 2rem;
+            text-align: center;
+        }
+
+            .no-image i {
+                color: #ddd;
+                margin-bottom: 0.5rem;
+            }
+
+        .image-options {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+            .btn-outline:hover {
+                background: var(--primary-color);
+                color: white;
+            }
+
+        /* Styles pour la galerie d'images */
+        .gallery-tabs {
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .gallery-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray-color);
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+            .gallery-tab.active {
+                color: var(--primary-color);
+                border-bottom-color: var(--primary-color);
+            }
+
+            .gallery-tab:hover {
+                color: var(--primary-color);
+                background: #f8f9fa;
+            }
+
+        .tab-pane {
+            display: none;
+        }
+
+            .tab-pane.active {
+                display: block;
+            }
+
+        /* CORRECTION URGENTE - À ajouter temporairement */
+        .gallery-container {
+            max-height: 50vh !important;
+            height: 400px !important; /* Hauteur fixe pour tester */
+            overflow-y: auto !important;
+        }
+
+        #predefinedTab.active {
+            display: block !important;
+            height: auto !important;
+            min-height: 400px !important;
+        }
+
+        .gallery-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+            gap: 1rem !important;
+            height: auto !important;
+        }
+
+        .gallery-item {
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+        }
+
+            .gallery-item:hover {
+                border-color: var(--primary-color);
+                transform: translateY(-2px);
+                box-shadow: var(--box-shadow);
+            }
+
+            .gallery-item.selected {
+                border-color: var(--tertiary-color);
+                background: #f0fff4;
+            }
+
+            .gallery-item img {
+                width: 100%;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 4px;
+            }
+
+        .gallery-item-name {
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 0.5rem;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        /* Styles pour l'upload */
+        .upload-container {
+            text-align: center;
+        }
+
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: var(--border-radius);
+            padding: 3rem 2rem;
+            background: #fafafa;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+            .upload-area.active {
+                border-color: var(--primary-color);
+                background: #f0f8ff;
+            }
+
+            .upload-area.highlight {
+                border-color: var(--tertiary-color);
+                background: #f0fff4;
+            }
+
+            .upload-area i {
+                color: var(--gray-color);
+                margin-bottom: 1rem;
+            }
+
+            .upload-area h4 {
+                margin-bottom: 0.5rem;
+                color: var(--dark-color);
+            }
+
+            .upload-area p {
+                color: var(--gray-color);
+                margin: 0.5rem 0;
+            }
+
+        .upload-preview {
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            background: white;
+            margin-bottom: 1.5rem;
+        }
+
+            .upload-preview img {
+                max-width: 100%;
+                max-height: 200px;
+                border-radius: var(--border-radius);
+                margin-bottom: 1rem;
+            }
+
+        .upload-info p {
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .upload-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .gallery-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Bouton supprimer sur l'aperçu */
+        .image-preview .remove-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .image-preview:hover .remove-image {
+            display: flex;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-success {
+            border-left-color: var(--tertiary-color);
+        }
+
+        .notification-error {
+            border-left-color: var(--danger-color);
+        }
+
+        .notification-warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .notification-content {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification-message {
+            flex: 1;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--gray-color);
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+            .notification-close:hover {
+                background-color: #f0f0f0;
+                color: var(--dark-color);
+            }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .admin-container {
+                flex-direction: column;
+            }
+
+            .admin-sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .admin-content {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 1rem;
+            }
+
+            .admin-nav {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .admin-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .gallery-tabs {
+                flex-direction: column;
+            }
+
+            .gallery-tab {
+                text-align: center;
+            }
+
+            .upload-actions,
+            .gallery-actions {
+                flex-direction: column;
+            }
+
+            .image-options {
+                flex-direction: column;
+            }
+        }
+        /* CORRECTION URGENTE GALERIE */
+        #imageGalleryModal .tab-content {
+            display: block !important;
+        }
+
+        #imageGalleryModal .tab-pane.active {
+            display: block !important;
+            height: auto !important;
+        }
+
+        .gallery-container {
+            height: auto !important;
+            max-height: 50vh;
+        }
+
+        .gallery-grid {
+            display: grid !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Admin -->
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <div class="admin-logo">
+                <i class="fas fa-crown"></i>
+                <h1>Administration <span>Bawol Shop</span></h1>
+            </div>
+            <div class="admin-actions">
+                <a href="/bawol/app.html" class="btn-admin">
+                    <i class="fas fa-store"></i> Boutique
+                </a>
+                <button class="btn-admin btn-danger" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Container principal -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-user">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-details">
+                        <h3 id="userName">Administrateur</h3>
+                        <p id="userRole">Super Admin</p>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="admin-menu">
+                <li class="menu-item active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Tableau de bord
+                </li>
+                <li class="menu-item" data-tab="products">
+                    <i class="fas fa-box"></i>
+                    Gestion des produits
+                </li>
+                <li class="menu-item" data-tab="orders">
+                    <i class="fas fa-receipt"></i>
+                    Commandes
+                </li>
+                <li class="menu-item" data-tab="users">
+                    <i class="fas fa-users"></i>
+                    Utilisateurs
+                </li>
+                <li class="menu-item" data-tab="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    Analytics
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="admin-content">
+            <!-- Tableau de bord -->
+            <div id="dashboard" class="tab-content active">
+                <h1>Tableau de bord</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Produits actifs</h3>
+                        <div class="stat-value" id="statsProducts">0</div>
+                        <div class="stat-change" id="productsChange">+0% ce mois</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Commandes totales</h3>
+                        <div class="stat-value" id="statsOrders">0</div>
+                        <div class="stat-change" id="ordersChange">+0% ce mois</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Utilisateurs</h3>
+                        <div class="stat-value" id="statsUsers">0</div>
+                        <div class="stat-change" id="usersChange">+0% ce mois</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Revenus totaux</h3>
+                        <div class="stat-value" id="statsRevenue">0 FCFA</div>
+                        <div class="stat-change" id="revenueChange">+0% ce mois</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Commandes récentes</h2>
+                    </div>
+                    <div id="recentOrders">
+                        <p style="padding: 2rem; text-align: center; color: var(--gray-color);">
+                            Chargement des commandes récentes...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestion des produits -->
+            <div id="products" class="tab-content">
+                <div class="table-header">
+                    <h2>Gestion des produits</h2>
+                    <div class="table-actions">
+                        <button class="btn-admin btn-success" id="addProductBtn">
+                            <i class="fas fa-plus"></i> Nouveau produit
+                        </button>
+                    </div>
+                </div>
+                <div id="productsList">
+                    <p style="padding: 2rem; text-align: center; color: var(--gray-color);">
+                        Chargement des produits...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Commandes -->
+            <div id="orders" class="tab-content">
+                <div class="table-header">
+                    <h2>Gestion des commandes</h2>
+                </div>
+                <div id="ordersList">
+                    <p style="padding: 2rem; text-align: center; color: var(--gray-color);">
+                        Chargement des commandes...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Utilisateurs -->
+            <div id="users" class="tab-content">
+                <div class="table-header">
+                    <h2>Gestion des utilisateurs</h2>
+                </div>
+                <div id="usersList">
+                    <p style="padding: 2rem; text-align: center; color: var(--gray-color);">
+                        Chargement des utilisateurs...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Analytics -->
+            <div id="analytics" class="tab-content">
+                <h1>Analytics et rapports</h1>
+                <div style="background: white; padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                    <p style="color: var(--gray-color); text-align: center;">
+                        🚧 Module Analytics en cours de développement...
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal d'ajout/modification produit -->
+    <div id="productModal" class="form-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="productModalTitle">Nouveau produit</h3>
+                <button class="notification-close" id="closeProductModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label for="productName">Nom du produit</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Prix (FCFA)</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Catégorie</label>
+                        <input type="text" id="productCategory" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Stock</label>
+                        <input type="number" id="productStock" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Image du produit</label>
+                        <div class="image-selector">
+                            <div class="image-preview">
+                                <img id="imagePreview" src="" alt="Aperçu" style="display: none;">
+                                <div id="noImagePreview" class="no-image">
+                                    <i class="fas fa-image fa-2x"></i>
+                                    <p>Aucune image sélectionnée</p>
+                                </div>
+                            </div>
+                            <div class="image-options">
+                                <button type="button" class="btn-admin btn-outline" id="openImageGallery">
+                                    <i class="fas fa-images"></i> Galerie
+                                </button>
+                                <button type="button" class="btn-admin btn-outline" id="uploadImageBtn">
+                                    <i class="fas fa-upload"></i> Uploader
+                                </button>
+                            </div>
+                            <input type="hidden" id="productImage" name="productImage">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-admin" id="cancelProductBtn">Annuler</button>
+                        <button type="submit" class="btn-admin btn-success" id="saveProductBtn">
+                            <span class="btn-text">Enregistrer</span>
+                            <div class="loading-spinner" style="display: none;"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Galerie d'images -->
+    <div id="imageGalleryModal" class="form-modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Choisir une image</h3>
+                <button class="notification-close" id="closeImageGallery">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="gallery-tabs">
+                    <button class="gallery-tab active" data-tab="predefined">Galerie par défaut</button>
+                    <button class="gallery-tab" data-tab="uploaded">Mes images uploadées</button>
+                    <button class="gallery-tab" data-tab="upload">Uploader nouvelle image</button>
+                </div>
+
+                <div class="tab-content">
+                    <!-- Onglet Galerie par défaut -->
+                    <div id="predefinedTab" class="tab-pane active">
+                        <div class="gallery-container">
+                            <div class="gallery-grid" id="predefinedGalleryGrid">
+                                <!-- Les images prédéfinies seront chargées ici par JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Onglet Images uploadées -->
+                    <div id="uploadedTab" class="tab-pane">
+                        <div class="gallery-container">
+                            <div id="uploadedImagesContainer">
+                                <p style="text-align: center; color: var(--gray-color); padding: 2rem;">
+                                    Chargement de vos images...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Onglet Upload -->
+                    <div id="uploadTab" class="tab-pane">
+                        <div class="upload-container">
+                            <div class="upload-area" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                                <h4>Glissez-déposez votre image ici</h4>
+                                <p>Formats supportés: JPG, PNG, GIF, WebP (max 5MB)</p>
+                                <p>ou</p>
+                                <button type="button" class="btn-admin" id="browseFilesBtn">
+                                    <i class="fas fa-folder-open"></i> Parcourir les fichiers
+                                </button>
+                                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                <img id="uploadedImagePreview" src="" alt="Aperçu upload">
+                                <div class="upload-info">
+                                    <p id="fileName"></p>
+                                    <p id="fileSize"></p>
+                                </div>
+                            </div>
+                            <div class="upload-actions">
+                                <button class="btn-admin btn-success" id="confirmUpload" style="display: none;">
+                                    <i class="fas fa-check"></i> Uploader cette image
+                                </button>
+                                <button class="btn-admin" id="cancelUpload">
+                                    <i class="fas fa-times"></i> Annuler
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-actions">
+                    <button class="btn-admin btn-success" id="confirmImageSelection">
+                        <i class="fas fa-check"></i> Confirmer la sélection
+                    </button>
+                    <button class="btn-admin" id="cancelImageSelection">
+                        <i class="fas fa-times"></i> Annuler
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
