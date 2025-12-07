@@ -439,7 +439,7 @@ window.addEventListener('load', function () {
     const pendingCheckout = localStorage.getItem('pending_checkout');
     const isAuthenticated = authService.isAuthenticated();
 
-    if (pendingCheckout && isAuthenticated && window.location.pathname.includes('app.html')) {
+    if (pendingCheckout && isAuthenticated && window.location.pathname.includes('index.html')) {
         const checkoutData = JSON.parse(pendingCheckout);
         const timeElapsed = Date.now() - checkoutData.timestamp;
 
