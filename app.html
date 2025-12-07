@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bawol Shop | Tout ce dont vous avez besoin, en un clic</title>
+    <style>
+        :root {
+            --primary-color: #1E90FF;
+            --secondary-color: #FF8C00;
+            --tertiary-color: #2E8B57;
+            --gray-color: #6c757d;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* Header et Navigation */
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-bar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+            .logo-text span {
+                color: var(--secondary-color);
+            }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+            .nav-links li {
+                margin-left: 1.5rem;
+            }
+
+            .nav-links a {
+                text-decoration: none;
+                color: var(--dark-color);
+                font-weight: 500;
+                transition: var(--transition);
+            }
+
+                .nav-links a:hover {
+                    color: var(--primary-color);
+                }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+            .nav-icons i {
+                font-size: 1.2rem;
+                cursor: pointer;
+                color: var(--dark-color);
+                transition: var(--transition);
+                padding: 8px;
+                border-radius: 50%;
+            }
+
+                .nav-icons i:hover {
+                    color: var(--primary-color);
+                    background-color: #f0f0f0;
+                }
+
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            z-index: 1000;
+            margin-top: 10px;
+        }
+
+            .user-dropdown.active {
+                display: block;
+            }
+
+            .user-dropdown a {
+                display: block;
+                padding: 12px 16px;
+                text-decoration: none;
+                color: var(--dark-color);
+                border-bottom: 1px solid #f0f0f0;
+                transition: var(--transition);
+            }
+
+                .user-dropdown a:hover {
+                    background-color: #f8f9fa;
+                    color: var(--primary-color);
+                }
+
+        .user-info {
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 500;
+        }
+
+        .cart-count {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-success {
+            border-left-color: var(--tertiary-color);
+        }
+
+        .notification-error {
+            border-left-color: #dc3545;
+        }
+
+        .notification-warning {
+            border-left-color: var(--secondary-color);
+        }
+
+        .notification-content {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification-message {
+            flex: 1;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--gray-color);
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+            .notification-close:hover {
+                background-color: #f0f0f0;
+                color: var(--dark-color);
+            }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/bawol/images/hero-bg.jpg') no-repeat center center/cover;
+            color: white;
+            padding: 5rem 1rem;
+            text-align: center;
+        }
+
+            .hero h1 {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+                max-width: 700px;
+                margin: 0 auto 2rem;
+            }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+            .btn:hover {
+                background-color: #0d7be6;
+                transform: translateY(-2px);
+            }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+            .btn-secondary:hover {
+                background-color: #e67e00;
+            }
+
+        /* Sections communes */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--dark-color);
+            position: relative;
+        }
+
+            .section-title::after {
+                content: '';
+                display: block;
+                width: 80px;
+                height: 4px;
+                background-color: var(--primary-color);
+                margin: 0.5rem auto;
+                border-radius: 2px;
+            }
+
+        /* Produits */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 5%;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.2rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            height: 2.6rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .product-rating {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.7rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+            .add-to-cart:hover {
+                background-color: #0d7be6;
+            }
+
+        /* Panier */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s;
+            z-index: 1000;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+            .cart-modal.active {
+                right: 0;
+            }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        .cart-items {
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-right: 1rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .quantity-btn {
+            background-color: #f0f0f0;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+            .quantity-btn:hover {
+                background-color: #e0e0e0;
+            }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            margin: 0 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.2rem;
+        }
+
+        .remove-item {
+            color: var(--gray-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: auto;
+            transition: var(--transition);
+        }
+
+            .remove-item:hover {
+                color: #dc3545;
+            }
+
+        .cart-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+            .checkout-btn:hover {
+                background-color: #e67e00;
+            }
+
+        .empty-cart {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--gray-color);
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+            .overlay.active {
+                display: block;
+            }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 5% 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+            .footer-column ul li {
+                margin-bottom: 0.8rem;
+            }
+
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+            .footer-column a:hover {
+                color: white;
+            }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+            .social-icons a {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+
+                .social-icons a:hover {
+                    background-color: var(--primary-color);
+                }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+                .nav-links li {
+                    margin: 0.5rem;
+                }
+
+            .cart-modal {
+                width: 100%;
+                right: -100%;
+            }
+
+            .products {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                padding: 0 2%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Barre supérieure -->
+    <div class="top-bar">
+        Livraison gratuite à partir de 20 000 FCFA d'achat | Retours faciles sous 30 jours
+    </div>
+
+    <!-- Header et Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="/bawol/images/logo.jpg" alt="Bawol Shop Logo" class="logo" onerror="this.src='https://via.placeholder.com/50x50/1E90FF/white?text=BS'">
+                <div class="logo-text">Bawol<span> Shop</span></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Produits</a></li>
+                <li><a href="#">Catégories</a></li>
+                <li><a href="#">Nouveautés</a></li>
+                <li><a href="#">Promotions</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <i class="fas fa-search"></i>
+                <div class="user-menu">
+                    <i class="fas fa-user" id="userIcon"></i>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-info" id="userInfo">
+                            <i class="fas fa-user-circle"></i> Non connecté
+                        </div>
+                        <a href="/bawol/login.html" id="loginLink">Se connecter</a>
+                        <a href="/bawol/register.html" id="registerLink">Créer un compte</a>
+                        <a href="#" id="adminLink" style="display: none;">Administration</a>
+                        <a href="#" id="logoutLink" style="display: none;">Déconnexion</a>
+                    </div>
+                </div>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Section Hero -->
+    <section class="hero">
+        <h1>Tout ce dont vous avez besoin, en un clic.</h1>
+        <p>Découvrez notre sélection de produits de qualité avec livraison rapide et paiement sécurisé</p>
+        <a href="#products" class="btn">Découvrir nos produits</a>
+    </section>
+
+    <!-- Section Produits -->
+    <section id="products">
+        <h2 class="section-title">Nos Produits</h2>
+        <div class="products" id="productsContainer">
+            <!-- Les produits seront chargés dynamiquement -->
+        </div>
+    </section>
+
+    <!-- Panier -->
+    <div class="cart-modal">
+        <div class="cart-header">
+            <h2>Votre Panier</h2>
+            <button class="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Les articles du panier seront ajoutés ici dynamiquement -->
+        </div>
+        <div class="cart-total">
+            Total: <span id="cart-total-price">0</span> FCFA
+        </div>
+        <button class="checkout-btn" id="proceed-checkout">Procéder au paiement</button>
+    </div>
+
+    <!-- Overlay pour le panier -->
+    <div class="overlay"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Bawol Shop</h3>
+                <p>Tout ce dont vous avez besoin, en un clic. Votre boutique en ligne de confiance.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Liens Rapides</h3>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Produits</a></li>
+                    <li><a href="#">Catégories</a></li>
+                    <li><a href="#">Nouveautés</a></li>
+                    <li><a href="#">Promotions</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Informations</h3>
+                <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Livraison</a></li>
+                    <li><a href="#">Retours</a></li>
+                    <li><a href="#">Mentions légales</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Dakar, Sénégal</li>
+                    <li><i class="fas fa-phone"></i> +221 33 123 45 67</li>
+                    <li><i class="fas fa-envelope"></i> contact@bawolshop.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2024 Bawol Shop. Tous droits réservés.
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
