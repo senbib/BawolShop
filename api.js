@@ -117,7 +117,7 @@ const authService = {
 
         // Rediriger si on est sur une page protégée
         if (window.location.pathname.includes('admin.html')) {
-            window.location.href = '/bawol/app.html';
+            window.location.href = '/bawol/index.html';
         }
     },
 
