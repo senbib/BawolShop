@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Bawol Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .register-header {
+            background: linear-gradient(135deg, #2E8B57, #247348);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+            .register-header h1 {
+                font-size: 2.2rem;
+                margin-bottom: 10px;
+            }
+
+            .register-header p {
+                opacity: 0.9;
+                font-size: 1.1rem;
+            }
+
+        .register-content {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+                color: #2c3e50;
+                font-size: 0.95rem;
+            }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+            .input-with-icon i {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #6c757d;
+            }
+
+            .input-with-icon input {
+                width: 100%;
+                padding: 15px 15px 15px 45px;
+                border: 2px solid #e9ecef;
+                border-radius: 10px;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                background: #f8f9fa;
+            }
+
+                .input-with-icon input:focus {
+                    outline: none;
+                    border-color: #2E8B57;
+                    background: white;
+                    box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+                }
+
+                .input-with-icon input::placeholder {
+                    color: #adb5bd;
+                }
+
+        .name-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #2E8B57, #247348);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+            .btn-register:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(46, 139, 87, 0.3);
+            }
+
+            .btn-register:active {
+                transform: translateY(0);
+            }
+
+            .btn-register:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+            .switch-auth p {
+                color: #6c757d;
+                margin-bottom: 15px;
+            }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #2E8B57;
+            border: 2px solid #2E8B57;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .btn-secondary:hover {
+                background: #2E8B57;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(46, 139, 87, 0.3);
+            }
+
+        .back-home {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .back-home a {
+                color: #6c757d;
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: color 0.3s ease;
+            }
+
+                .back-home a:hover {
+                    color: #2E8B57;
+                }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: #2E8B57;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .password-strength {
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+
+        .strength-weak {
+            color: #dc3545;
+        }
+
+        .strength-medium {
+            color: #ffc107;
+        }
+
+        .strength-strong {
+            color: #2E8B57;
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            border-left: 4px solid #2E8B57;
+        }
+
+        .notification-success {
+            border-left-color: #2E8B57;
+        }
+
+        .notification-error {
+            border-left-color: #dc3545;
+        }
+
+        .notification-warning {
+            border-left-color: #FF8C00;
+        }
+
+        .notification-content {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification-message {
+            flex: 1;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+            .notification-close:hover {
+                background-color: #f0f0f0;
+                color: #343a40;
+            }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .register-header {
+                padding: 30px 20px;
+            }
+
+            .register-content {
+                padding: 30px 20px;
+            }
+
+            .register-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .name-fields {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <!-- En-tête -->
+        <div class="register-header">
+            <h1><i class="fas fa-user-plus"></i> Inscription</h1>
+            <p>Rejoignez la communauté Bawol Shop</p>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="register-content">
+            <form id="registerForm">
+                <div class="name-fields">
+                    <div class="form-group">
+                        <label for="firstName"><i class="fas fa-user"></i> Prénom</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-signature"></i>
+                            <input type="text" id="firstName" required placeholder="Votre prénom">
+                        </div>
+                        <div class="error-message" id="firstNameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName"><i class="fas fa-user"></i> Nom</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-signature"></i>
+                            <input type="text" id="lastName" required placeholder="Votre nom">
+                        </div>
+                        <div class="error-message" id="lastNameError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone"><i class="fas fa-mobile-alt"></i> Numéro de téléphone</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="phone" required placeholder="Ex: 774677217">
+                    </div>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Mot de passe</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="password" required placeholder="Minimum 4 caractères" minlength="4">
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                    <div class="password-strength" id="passwordStrength"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword"><i class="fas fa-lock"></i> Confirmer le mot de passe</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="confirmPassword" required placeholder="Retapez votre mot de passe">
+                    </div>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <button type="submit" class="btn-register" id="registerButton">
+                    <span class="btn-text">Créer mon compte</span>
+                    <div class="loading-spinner" id="registerSpinner"></div>
+                </button>
+            </form>
+
+            <div class="switch-auth">
+                <p>Déjà un compte ?</p>
+                <a href="/bawol/login.html" class="btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </a>
+            </div>
+
+            <div class="back-home">
+                <a href="/bawol/app.html"><i class="fas fa-arrow-left"></i> Retour à la boutique</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        // Gestion de la redirection après inscription
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get('redirect');
+
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const registerButton = document.getElementById('registerButton');
+            const registerSpinner = document.getElementById('registerSpinner');
+            const btnText = registerButton.querySelector('.btn-text');
+
+            // Reset errors
+            resetErrors();
+
+            // Validation
+            if (!validateForm(firstName, lastName, phone, password, confirmPassword)) {
+                return;
+            }
+
+            // Show loading state
+            registerButton.disabled = true;
+            btnText.textContent = 'Création du compte...';
+            registerSpinner.style.display = 'block';
+
+            try {
+                const formData = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    phoneNumber: phone,
+                    password: password,
+                    countryCode: '+221'
+                    // Role est automatiquement "Client" côté backend
+                };
+
+                const result = await authService.register(formData);
+
+                if (result.token) {
+                    showNotification('✅ Compte créé avec succès!', 'success');
+
+                    // Redirection intelligente
+                    setTimeout(() => {
+                        const pendingCheckout = localStorage.getItem('pending_checkout');
+
+                        if (pendingCheckout) {
+                            // Retour au processus de checkout
+                            window.location.href = '/bawol/app.html';
+                        } else {
+                            // Redirection normale
+                            window.location.href = '/bawol/app.html';
+                        }
+                    }, 2000);
+
+                } else {
+                    throw new Error(result.message || 'Échec de la création du compte');
+                }
+
+            } catch (error) {
+                console.error('Erreur inscription:', error);
+
+                let errorMessage = 'Erreur lors de la création du compte';
+                if (error.message.includes('déjà utilisé')) {
+                    showError('phoneError', 'Ce numéro de téléphone est déjà utilisé');
+                } else if (error.message.includes('400')) {
+                    errorMessage = 'Données invalides';
+                } else {
+                    errorMessage = error.message;
+                }
+
+                showNotification('❌ ' + errorMessage, 'error');
+
+                // Reset button
+                registerButton.disabled = false;
+                btnText.textContent = 'Créer mon compte';
+                registerSpinner.style.display = 'none';
+            }
+        });
+
+        function validateForm(firstName, lastName, phone, password, confirmPassword) {
+            let isValid = true;
+
+            if (!firstName) {
+                showError('firstNameError', 'Le prénom est requis');
+                isValid = false;
+            }
+
+            if (!lastName) {
+                showError('lastNameError', 'Le nom est requis');
+                isValid = false;
+            }
+
+            if (!phone) {
+                showError('phoneError', 'Le numéro de téléphone est requis');
+                isValid = false;
+            } else if (!/^\d{9}$/.test(phone)) {
+                showError('phoneError', 'Le numéro doit contenir 9 chiffres');
+                isValid = false;
+            }
+
+            if (!password) {
+                showError('passwordError', 'Le mot de passe est requis');
+                isValid = false;
+            } else if (password.length < 4) {
+                showError('passwordError', 'Le mot de passe doit contenir au moins 4 caractères');
+                isValid = false;
+            }
+
+            if (!confirmPassword) {
+                showError('confirmPasswordError', 'Veuillez confirmer votre mot de passe');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('confirmPasswordError', 'Les mots de passe ne correspondent pas');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function resetErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            if (type === 'error') icon = '❌';
+            if (type === 'warning') icon = '⚠️';
+
+            notification.innerHTML = `
+                    <div class="notification-content">
+                        <span class="notification-message">${icon} ${message}</span>
+                        <button class="notification-close">&times;</button>
+                    </div>
+                `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideInRight 0.3s ease reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                notification.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            });
+        }
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function () {
+            const password = this.value;
+            const strengthElement = document.getElementById('passwordStrength');
+
+            if (password.length === 0) {
+                strengthElement.textContent = '';
+                return;
+            }
+
+            let strength = 'Faible';
+            let strengthClass = 'strength-weak';
+
+            if (password.length >= 8) {
+                strength = 'Fort';
+                strengthClass = 'strength-strong';
+            } else if (password.length >= 6) {
+                strength = 'Moyen';
+                strengthClass = 'strength-medium';
+            }
+
+            strengthElement.textContent = `Force du mot de passe: ${strength}`;
+            strengthElement.className = `password-strength ${strengthClass}`;
+        });
+
+        // Confirm password validation
+        document.getElementById('confirmPassword').addEventListener('input', function () {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const errorElement = document.getElementById('confirmPasswordError');
+
+            if (confirmPassword && password !== confirmPassword) {
+                errorElement.textContent = 'Les mots de passe ne correspondent pas';
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        });
+
+        // Enter key support
+        document.getElementById('confirmPassword').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                document.getElementById('registerForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Auto-focus on first name input
+        document.getElementById('firstName').focus();
+    </script>
+</body>
+</html>
