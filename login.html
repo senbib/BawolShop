@@ -412,7 +412,7 @@
                         if (pendingCheckout) {
                             // Retour au processus de checkout
                             console.log('🛒 Redirection vers checkout');
-                            window.location.href = '/bawol/app.html';
+                            window.location.href = '/bawol/index.html';
                         } else if (authService.isAdmin()) {
                             // TOUJOURS rediriger vers l'admin si l'utilisateur est admin
                             console.log('👑 Redirection vers interface admin');
@@ -420,11 +420,11 @@
                         } else if (redirect === 'admin') {
                             // Si l'utilisateur n'est pas admin mais a demandé l'admin
                             console.log('⚠️ Accès admin refusé, redirection vers boutique');
-                            window.location.href = '/bawol/app.html';
+                            window.location.href = '/bawol/index.html';
                         } else {
                             // Redirection normale pour les clients
                             console.log('🛍️ Redirection vers boutique');
-                            window.location.href = '/bawol/app.html';
+                            window.location.href = '/bawol/index.html';
                         }
                     }, 1500);
 
