@@ -58,7 +58,7 @@ class AdminApp {
 
         if (!authService.isAdmin()) {
             showNotification('❌ Accès réservé aux administrateurs', 'error');
-            setTimeout(() => window.location.href = '/bawol/app.html', 2000);
+            setTimeout(() => window.location.href = '/bawol/index.html', 2000);
             return false;
         }
 
